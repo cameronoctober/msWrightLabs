@@ -6,7 +6,7 @@ services:
     plan: free
     region: frankfurt
     buildCommand: "./mvnw clean package -DskipTests"
-    startCommand: "java -jar target/*.jar" # NOTE: If using Docker runtime, Render ignores this and uses ENTRYPOINT
+    startCommand: "java -jar target/*.jar"
     dockerContext: .
     dockerfilePath: Dockerfile
     healthCheckPath: /actuator/health
@@ -31,6 +31,8 @@ services:
         fromDatabase:
           name: marketplace-db
           property: password
+      - key: JWT_SECRET
+        sync: false
       - key: S3_BUCKET
         sync: false
       - key: S3_REGION
