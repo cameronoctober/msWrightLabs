@@ -1,5 +1,10 @@
 package com.wrightlabs.marketplace.domain.entity;
 
+import io.hypersistence.utils.hibernate.type.array.ListArrayType;
+import org.hibernate.annotations.Type;
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -43,11 +48,15 @@ public class SellerProfile {
     @Column(nullable = false)
     private Boolean approved = false;
 
+    @Type(ListArrayType.class)
     @Column(columnDefinition = "TEXT[]")
-    private String[] subjects;
+    @Builder.Default
+    private List<String> subjects = new ArrayList<>();
 
+    @Type(ListArrayType.class)
     @Column(columnDefinition = "TEXT[]")
-    private String[] grades;
+    @Builder.Default
+    private List<String> grades = new ArrayList<>();
 
     @Column(name = "website_url", length = 500)
     private String websiteUrl;
