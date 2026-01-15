@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout}">
+
+<head>
+    <title>Seller Dashboard - Teacher Marketplace</title>
+</head>
+
+<body>
+    <div layout:fragment="content">
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <h1>Seller Dashboard</h1>
+                <p class="text-muted">Welcome back, <span th:text="${#authentication.principal.name}">User</span>!</p>
+            </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="row g-4 mb-5">
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <h6 class="card-subtitle mb-2 text-muted">Total Sales</h6>
+                        <h2 class="card-title mb-0">R <span th:text="${stats.totalRevenue}">12,450</span></h2>
+                        <p class="text-success small mb-0"><i class="bi bi-arrow-up"></i> 12% vs last month</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <h6 class="card-subtitle mb-2 text-muted">Units Sold</h6>
+                        <h2 class="card-title mb-0" th:text="${stats.totalUnitsSold}">145</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <h6 class="card-subtitle mb-2 text-muted">Active Products</h6>
+                        <h2 class="card-title mb-0" th:text="${stats.activeProducts}">24</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <h6 class="card-subtitle mb-2 text-muted">Avg. Rating</h6>
+                        <div class="d-flex align-items-center">
+                            <h2 class="card-title mb-0 me-2" th:text="${stats.averageRating}">4.8</h2>
+                            <div class="text-warning">
+                                <i class="bi bi-star-fill"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-md-8">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-white py-3">
+                        <h5 class="card-title mb-0">Recent Sales</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle">
+                                <thead>
+                                    <tr>
+                                        <th>Order #</th>
+                                        <th>Date</th>
+                                        <th>Product</th>
+                                        <th>Amount</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="sale : ${recentSales}">
+                                        <td th:text="${'#' + sale.orderNumber}">#12345</td>
+                                        <td th:text="${#temporals.format(sale.date, 'dd MMM yyyy')}">12 Jan 2024</td>
+                                        <td th:text="${sale.productName}">Grade 12 Math Paper 1</td>
+                                        <td th:text="${'R ' + sale.amount}">R 150.00</td>
+                                        <td><span class="badge bg-success">Paid</span></td>
+                                    </tr>
+                                    <tr th:if="${#lists.isEmpty(recentSales)}">
+                                        <td colspan="5" class="text-center py-4 text-muted">No recent sales found.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                        <h5 class="card-title mb-0">Top Products</h5>
+                        <a th:href="@{/seller/products}" class="btn btn-sm btn-outline-primary">View All</a>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="list-group list-group-flush">
+                            <div th:each="product : ${topProducts}" class="list-group-item px-3 py-3">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h6 class="mb-1 text-truncate" style="max-width: 180px;" th:text="${product.title}">
+                                        Product Title</h6>
+                                    <small class="text-success" th:text="${'R ' + product.totalRevenue}">R 4500</small>
+                                </div>
+                                <small class="text-muted" th:text="${product.unitsSold + ' units sold'}">45 units
+                                    sold</small>
+                            </div>
+                            <div th:if="${#lists.isEmpty(topProducts)}"
+                                class="list-group-item text-center py-4 text-muted">
+                                No products yet.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

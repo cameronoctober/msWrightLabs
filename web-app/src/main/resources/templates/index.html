@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout}">
+
+<head>
+    <title>Home - Lesson Marketplace</title>
+</head>
+
+<body>
+    <main layout:fragment="content">
+        <!-- Hero Section -->
+        <section class="bg-light py-5">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-6">
+                        <h1 class="display-4 fw-bold">Quality Teaching Resources,<br>Made by Teachers</h1>
+                        <p class="lead">Discover thousands of lesson plans, worksheets, and educational materials
+                            created by experienced educators.</p>
+                        <div class="d-grid gap-2 d-md-flex">
+                            <a href="/products" class="btn btn-primary btn-lg">Browse Resources</a>
+                            <a href="/seller/register" class="btn btn-outline-primary btn-lg">Sell Your Resources</a>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <img src="/images/hero-image.svg" alt="Teaching Resources" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bestsellers Section -->
+        <section class="container my-5">
+            <h2 class="mb-4">Bestselling Resources</h2>
+            <div class="row">
+                <div class="col-md-4 mb-4" th:each="product : ${bestsellers}">
+                    <div class="card h-100">
+                        <img src="/images/placeholder-product.jpg" class="card-img-top" alt="Product">
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${product.title}">Product Title</h5>
+                            <p class="card-text text-muted" th:text="${product.subtitle}">Subtitle</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="h5 mb-0" th:text="${'R ' + product.price}">R 99.00</span>
+                                <a th:href="@{/products/{id}(id=${product.id})}" class="btn btn-sm btn-primary">View</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- New Arrivals Section -->
+        <section class="container my-5">
+            <h2 class="mb-4">New Arrivals</h2>
+            <div class="row">
+                <div class="col-md-4 mb-4" th:each="product : ${newest}">
+                    <div class="card h-100">
+                        <img src="/images/placeholder-product.jpg" class="card-img-top" alt="Product">
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${product.title}">Product Title</h5>
+                            <p class="card-text text-muted" th:text="${product.subtitle}">Subtitle</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="h5 mb-0" th:text="${'R ' + product.price}">R 99.00</span>
+                                <a th:href="@{/products/{id}(id=${product.id})}" class="btn btn-sm btn-primary">View</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Top Rated Section -->
+        <section class="container my-5">
+            <h2 class="mb-4">Top Rated</h2>
+            <div class="row">
+                <div class="col-md-4 mb-4" th:each="product : ${topRated}">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${product.title}">Product Title</h5>
+                            <p class="card-text text-muted" th:text="${product.subtitle}">Subtitle</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="h5 mb-0" th:text="${'R ' + product.price}">R 99.00</span>
+                                <a th:href="@{/products/{id}(id=${product.id})}" class="btn btn-sm btn-primary">View</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="bg-primary text-white py-5">
+            <div class="container text-center">
+                <h2 class="mb-4">Ready to Start Selling Your Resources?</h2>
+                <p class="lead mb-4">Join thousands of educators earning passive income by sharing their best teaching
+                    materials.</p>
+                <a href="/seller/register" class="btn btn-light btn-lg">Get Started</a>
+            </div>
+        </section>
+    </main>
+</body>
+
+</html>

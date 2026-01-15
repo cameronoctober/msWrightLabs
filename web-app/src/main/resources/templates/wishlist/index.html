@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout}">
+
+<head>
+    <title>My Wishlist - Teacher Marketplace</title>
+</head>
+
+<body>
+    <div layout:fragment="content">
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <h1>My Wishlist</h1>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-12" th:if="${#lists.isEmpty(wishlistItems)}">
+                <div class="text-center py-5">
+                    <div class="mb-3 text-muted">
+                        <i class="bi bi-heart display-1"></i>
+                    </div>
+                    <h3>Your wishlist is empty</h3>
+                    <p class="text-muted">Save items you want to buy later.</p>
+                    <a th:href="@{/products}" class="btn btn-primary mt-3">Browse Products</a>
+                </div>
+            </div>
+
+            <div class="col-md-3" th:each="item : ${wishlistItems}">
+                <div class="card h-100 border-0 shadow-sm">
+                    <!-- Product Image -->
+                    <a th:href="@{|/products/${item.product.id}|}">
+                        <div
+                            class="ratio ratio-4x3 bg-light text-secondary d-flex align-items-center justify-content-center">
+                            <i class="bi bi-image fs-1" th:if="${item.product.imageUrl == null}"></i>
+                            <img th:if="${item.product.imageUrl != null}" th:src="${item.product.imageUrl}"
+                                class="card-img-top object-fit-cover" alt="Product Image">
+                        </div>
+                    </a>
+
+                    <div class="card-body">
+                        <h5 class="card-title text-truncate">
+                            <a th:href="@{|/products/${item.product.id}|}" class="text-decoration-none text-dark"
+                                th:text="${item.product.title}">Product Title</a>
+                        </h5>
+                        <p class="card-text text-muted small mb-2"
+                            th:text="${item.product.subject + ' • ' + item.product.grade}">Math • Grade 10</p>
+
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <span class="h5 mb-0 text-primary" th:text="${'R ' + item.product.price}">R 50.00</span>
+
+                            <form th:action="@{/wishlist/remove}" method="post">
+                                <input type="hidden" name="productId" th:value="${item.product.id}">
+                                <button type="submit" class="btn btn-sm btn-outline-danger"
+                                    title="Remove from Wishlist">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="card-footer bg-white border-top-0">
+                        <form th:action="@{/cart/add}" method="post">
+                            <input type="hidden" name="productId" th:value="${item.product.id}">
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i class="bi bi-cart-plus me-2"></i>Add to Cart
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout}">
+
+<head>
+    <title>Products - Marketplace</title>
+</head>
+
+<body>
+    <div layout:fragment="content">
+        <div class="container mt-4">
+            <h2>Educational Resources</h2>
+
+            <!-- Search and Filters -->
+            <form th:action="@{/products}" method="get" class="mb-4">
+                <div class="row">
+                    <div class="col-md-4">
+                        <input type="text" name="keyword" class="form-control" placeholder="Search products..."
+                            th:value="${criteria.keyword}">
+                    </div>
+                    <div class="col-md-2">
+                        <select name="grade" class="form-control">
+                            <option value="">All Grades</option>
+                            <option th:each="i : ${#numbers.sequence(1, 12)}" th:value="${'Grade ' + i}"
+                                th:text="${'Grade ' + i}" th:selected="${criteria.grade == 'Grade ' + i}"></option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <select name="subject" class="form-control">
+                            <option value="">All Subjects</option>
+                            <option value="Mathematics">Mathematics</option>
+                            <option value="Science">Science</option>
+                            <option value="English">English</option>
+                            <option value="History">History</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <select name="sortBy" class="form-control">
+                            <option value="newest">Newest</option>
+                            <option value="price_asc">Price: Low to High</option>
+                            <option value="price_desc">Price: High to Low</option>
+                            <option value="popularity">Most Popular</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-primary w-100">Search</button>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Product Grid -->
+            <div class="row">
+                <div class="col-md-4 mb-4" th:each="product : ${products.content}">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${product.title}">Product Title</h5>
+                            <p class="card-text text-muted" th:text="${product.subtitle}">Subtitle</p>
+                            <p class="card-text">
+                                <strong th:text="${'R' + product.price}">R99.99</strong>
+                            </p>
+                            <span class="badge bg-secondary" th:if="${product.metadata.grade}"
+                                th:text="${product.metadata.grade}">Grade</span>
+                            <span class="badge bg-info" th:if="${product.metadata.subject}"
+                                th:text="${product.metadata.subject}">Subject</span>
+                        </div>
+                        <div class="card-footer">
+                            <a th:href="@{/products/{id}(id=${product.id})}" class="btn btn-primary btn-sm">View
+                                Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pagination -->
+            <nav th:if="${products.totalPages > 1}">
+                <ul class="pagination">
+                    <li class="page-item" th:classappend="${products.first} ? 'disabled'">
+                        <a class="page-link" th:href="@{/products(page=${products.number - 1})}">Previous</a>
+                    </li>
+                    <li class="page-item" th:each="i : ${#numbers.sequence(0, products.totalPages - 1)}"
+                        th:classappend="${i == products.number} ? 'active'">
+                        <a class="page-link" th:href="@{/products(page=${i})}" th:text="${i + 1}">1</a>
+                    </li>
+                    <li class="page-item" th:classappend="${products.last} ? 'disabled'">
+                        <a class="page-link" th:href="@{/products(page=${products.number + 1})}">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout}">
+
+<head>
+    <title th:text="${product.id == null ? 'New Product' : 'Edit Product'}">Product Form</title>
+</head>
+
+<body>
+    <div layout:fragment="content">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h1 th:text="${product.id == null ? 'Create New Product' : 'Edit Product'}">Product Form</h1>
+                    <a th:href="@{/seller/products}" class="btn btn-outline-secondary">Cancel</a>
+                </div>
+
+                <div class="card shadow-sm border-0">
+                    <div class="card-body p-4">
+                        <form th:action="@{/seller/products}" th:object="${product}" method="post"
+                            enctype="multipart/form-data">
+                            <input type="hidden" th:field="*{id}">
+
+                            <div class="row g-4">
+                                <!-- Basic Info -->
+                                <div class="col-md-8">
+                                    <h5 class="mb-3">Basic Information</h5>
+
+                                    <div class="mb-3">
+                                        <label for="title" class="form-label">Product Title <span
+                                                class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" id="title" th:field="*{title}" required>
+                                        <div class="invalid-feedback" th:if="${#fields.hasErrors('title')}"
+                                            th:errors="*{title}">Error</div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="description" class="form-label">Description <span
+                                                class="text-danger">*</span></label>
+                                        <textarea class="form-control" id="description" th:field="*{description}"
+                                            rows="6" required></textarea>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="subject" class="form-label">Subject <span
+                                                    class="text-danger">*</span></label>
+                                            <select class="form-select" id="subject" th:field="*{subject}" required>
+                                                <option value="">Select Subject...</option>
+                                                <option value="Mathematics">Mathematics</option>
+                                                <option value="Science">Science</option>
+                                                <option value="English">English</option>
+                                                <option value="History">History</option>
+                                                <option value="Geography">Geography</option>
+                                                <option value="Life Skills">Life Skills</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="grade" class="form-label">Grade Level <span
+                                                    class="text-danger">*</span></label>
+                                            <select class="form-select" id="grade" th:field="*{grade}" required>
+                                                <option value="">Select Grade...</option>
+                                                <option th:each="i : ${#numbers.sequence(1, 12)}"
+                                                    th:value="${'Grade ' + i}" th:text="${'Grade ' + i}">Grade 1
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Sidebar Settings -->
+                                <div class="col-md-4">
+                                    <div class="bg-light p-3 rounded">
+                                        <h5 class="mb-3">Details & Pricing</h5>
+
+                                        <div class="mb-3">
+                                            <label for="price" class="form-label">Price (ZAR) <span
+                                                    class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <span class="input-group-text">R</span>
+                                                <input type="number" class="form-control" id="price" th:field="*{price}"
+                                                    min="0" step="1.00" required>
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="resourceType" class="form-label">Resource Type</label>
+                                            <select class="form-select" id="resourceType" th:field="*{resourceType}">
+                                                <option value="LESSON_PLAN">Lesson Plan</option>
+                                                <option value="WORKSHEET">Worksheet</option>
+                                                <option value="ASSESSMENT">Assessment</option>
+                                                <option value="PRESENTATION">Presentation</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="file" class="form-label">Product File</label>
+                                            <input type="file" class="form-control" id="file" name="file"
+                                                th:required="${product.id == null}">
+                                            <div class="form-text">PDF, DOCX, PPTX, or ZIP. Max 50MB.</div>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="preview" class="form-label">Preview Image</label>
+                                            <input type="file" class="form-control" id="preview" name="preview"
+                                                accept="image/*">
+                                            <div class="form-text">JPG or PNG. Will be displayed on listing.</div>
+                                        </div>
+
+                                        <hr>
+
+                                        <div class="form-check form-switch mb-3">
+                                            <input class="form-check-input" type="checkbox" id="publish" name="publish"
+                                                value="true">
+                                            <label class="form-check-label" for="publish">Publish Immediately</label>
+                                        </div>
+
+                                        <button type="submit" class="btn btn-primary w-100">Save Product</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

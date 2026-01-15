@@ -1,0 +1,141 @@
+spring:
+  application:
+    name: lesson-marketplace
+  
+  # Database configuration
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:marketplace}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      connection-timeout: 30000
+  
+  # JPA/Hibernate configuration
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        use_sql_comments: false
+        jdbc:
+          time_zone: UTC
+  
+  # Flyway migration
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    locations: classpath:db/migration
+  
+  # Email configuration
+  mail:
+    host: ${SMTP_HOST:smtp.gmail.com}
+    port: ${SMTP_PORT:587}
+    username: ${SMTP_USERNAME}
+    password: ${SMTP_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+    from: ${MAIL_FROM:noreply@lessonmarketplace.com}
+  
+  # File upload
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 100MB
+      max-request-size: 100MB
+      file-size-threshold: 2MB
+  
+  # Thymeleaf
+  thymeleaf:
+    cache: false
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML
+    encoding: UTF-8
+
+# Storage configuration (S3-compatible)
+storage:
+  type: ${STORAGE_TYPE:s3}  # s3 or minio
+  bucket: ${S3_BUCKET:marketplace-files}
+  region: ${S3_REGION:us-east-1}
+  endpoint: ${S3_ENDPOINT:}  # For Minio: http://localhost:9000
+  access-key: ${S3_ACCESS_KEY}
+  secret-key: ${S3_SECRET_KEY}
+  presigned-url-expiry-minutes: 60
+
+# PayFast payment gateway configuration
+payfast:
+  merchant-id: ${PAYFAST_MERCHANT_ID}
+  merchant-key: ${PAYFAST_MERCHANT_KEY}
+  passphrase: ${PAYFAST_PASSPHRASE}
+  sandbox-mode: ${PAYFAST_SANDBOX:true}
+  base-url: ${PAYFAST_BASE_URL:https://sandbox.payfast.co.za}
+  return-url: ${BASE_URL:http://localhost:8080}/checkout/success
+  cancel-url: ${BASE_URL:http://localhost:8080}/checkout/cancel
+  notify-url: ${BASE_URL:http://localhost:8080}/webhook/payfast
+
+# Platform configuration
+platform:
+  commission-rate: ${COMMISSION_RATE:0.15}  # 15% platform fee
+  base-url: ${BASE_URL:http://localhost:8080}
+  support-email: ${SUPPORT_EMAIL:support@lessonmarketplace.com}
+
+# Security
+security:
+  jwt:
+    secret: ${JWT_SECRET:your-secret-key-change-this-in-production}
+    expiration-ms: 86400000  # 24 hours
+
+# Spring Boot Actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,flyway
+      base-path: /actuator
+  endpoint:
+    health:
+      show-details: when-authorized
+      roles: ADMIN
+  health:
+    defaults:
+      enabled: true
+
+# Server configuration
+server:
+  port: ${PORT:8080}
+  error:
+    include-message: always
+    include-binding-errors: always
+    include-stacktrace: on_param
+    include-exception: false
+  compression:
+    enabled: true
+    mime-types: text/html,text/xml,text/plain,text/css,application/javascript,application/json
+
+# Logging
+logging:
+  level:
+    root: INFO
+    com.wrightlabs.marketplace: DEBUG
+    org.springframework.web: INFO
+    org.springframework.security: INFO
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: logs/marketplace.log
+    max-size: 10MB
+    max-history: 30

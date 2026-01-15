@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout}">
+
+<head>
+    <title>Register - Marketplace</title>
+</head>
+
+<body>
+    <div layout:fragment="content">
+        <div class="container mt-5">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="card shadow">
+                        <div class="card-header">
+                            <h3 class="mb-0">Create Account</h3>
+                        </div>
+                        <div class="card-body">
+                            <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+                            <form th:action="@{/register}" th:object="${registerRequest}" method="post">
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="email" th:field="*{email}" required>
+                                    <div class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="fullName" class="form-label">Full Name</label>
+                                    <input type="text" class="form-control" id="fullName" th:field="*{fullName}"
+                                        required>
+                                    <div class="text-danger" th:if="${#fields.hasErrors('fullName')}"
+                                        th:errors="*{fullName}"></div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="password" class="form-label">Password</label>
+                                    <input type="password" class="form-control" id="password" th:field="*{password}"
+                                        required>
+                                    <small class="form-text text-muted">Minimum 8 characters</small>
+                                    <div class="text-danger" th:if="${#fields.hasErrors('password')}"
+                                        th:errors="*{password}"></div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="confirmPassword" class="form-label">Confirm Password</label>
+                                    <input type="password" class="form-control" id="confirmPassword"
+                                        th:field="*{confirmPassword}" required>
+                                    <div class="text-danger" th:if="${#fields.hasErrors('confirmPassword')}"
+                                        th:errors="*{confirmPassword}"></div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Account Type</label>
+                                    <div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" th:field="*{role}"
+                                                value="BUYER" id="roleBuyer" checked>
+                                            <label class="form-check-label" for="roleBuyer">
+                                                Buyer - Purchase lesson plans
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" th:field="*{role}"
+                                                value="SELLER" id="roleSeller">
+                                            <label class="form-check-label" for="roleSeller">
+                                                Seller - Sell lesson plans
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100">Register</button>
+                            </form>
+
+                            <div class="mt-3 text-center">
+                                <span>Already have an account? <a th:href="@{/login}">Login</a></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

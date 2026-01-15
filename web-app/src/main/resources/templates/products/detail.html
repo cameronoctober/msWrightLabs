@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout}">
+
+<head>
+    <title th:text="${product.title}">Product</title>
+</head>
+
+<body>
+    <div layout:fragment="content">
+        <div class="container mt-4">
+            <div class="row">
+                <div class="col-md-8">
+                    <h2 th:text="${product.title}">Product Title</h2>
+                    <p class="text-muted" th:text="${product.subtitle}">Subtitle</p>
+                    <p th:text="${product.description}">Description</p>
+
+                    <h4 class="mt-4">Details</h4>
+                    <ul>
+                        <li th:if="${product.metadata.grade}">Grade: <span th:text="${product.metadata.grade}"></span>
+                        </li>
+                        <li th:if="${product.metadata.subject}">Subject: <span
+                                th:text="${product.metadata.subject}"></span></li>
+                        <li th:if="${product.metadata.resourceType}">Type: <span
+                                th:text="${product.metadata.resourceType}"></span></li>
+                        <li th:if="${product.metadata.pageCount}">Pages: <span
+                                th:text="${product.metadata.pageCount}"></span></li>
+                    </ul>
+
+                    <!-- Reviews -->
+                    <h4 class="mt-4">Reviews</h4>
+                    <div th:if="${averageRating > 0}">
+                        <p><strong th:text="${#numbers.formatDecimal(averageRating, 1, 1)}">4.5</strong> stars
+                            (<span th:text="${reviewCount}">10</span> reviews)</p>
+                    </div>
+                    <div th:each="review : ${reviews.content}" class="mb-3">
+                        <div><strong th:text="${'★'.repeat(review.rating)}">★★★★★</strong></div>
+                        <p th:text="${review.comment}">Great product!</p>
+                        <small class="text-muted" th:text="${review.user.email}">user@example.com</small>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h3 th:text="${'R' + product.price}">R99.99</h3>
+                            <form th:action="@{/cart/add}" method="post">
+                                <input type="hidden" name="productId" th:value="${product.id}">
+                                <button type="submit" class="btn btn-primary w-100 mb-2">Add to Cart</button>
+                            </form>
+                            <form th:action="@{/wishlist/add}" method="post">
+                                <input type="hidden" name="productId" th:value="${product.id}">
+                                <button type="submit" class="btn btn-outline-secondary w-100">Add to Wishlist</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

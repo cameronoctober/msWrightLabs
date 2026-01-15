@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout}">
+
+<head>
+    <title>Admin Dashboard - Teacher Marketplace</title>
+</head>
+
+<body>
+    <div layout:fragment="content">
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <h1>Admin Dashboard</h1>
+                <p class="text-muted">Platform Overview</p>
+            </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="row g-4 mb-5">
+            <div class="col-md-3">
+                <div class="card bg-primary text-white border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <h6 class="card-subtitle mb-2 opacity-75">Platform Revenue</h6>
+                        <h2 class="card-title mb-0">R <span th:text="${stats.totalRevenue}">125,450</span></h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <h6 class="card-subtitle mb-2 text-muted">Total Users</h6>
+                        <h2 class="card-title mb-0" th:text="${stats.totalUsers}">1,245</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <h6 class="card-subtitle mb-2 text-muted">Products</h6>
+                        <h2 class="card-title mb-0" th:text="${stats.totalProducts}">856</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <h6 class="card-subtitle mb-2 text-muted">Pending Reviews</h6>
+                        <div class="d-flex align-items-center justify-content-between">
+                            <h2 class="card-title mb-0" th:text="${stats.pendingReviews}">12</h2>
+                            <a th:href="@{/admin/reviews}" class="btn btn-sm btn-outline-primary">Review</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="row mb-4">
+            <div class="col-md-6 mb-3">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-header bg-white py-3">
+                        <h5 class="card-title mb-0">Pending Products</h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="list-group list-group-flush">
+                            <div th:each="product : ${pendingProducts}"
+                                class="list-group-item px-3 py-3 d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="mb-1" th:text="${product.title}">Product Title</h6>
+                                    <small class="text-muted" th:text="${'By ' + product.sellerName}">By John
+                                        Doe</small>
+                                </div>
+                                <div class="btn-group btn-group-sm">
+                                    <a th:href="@{|/products/${product.id}|}" target="_blank"
+                                        class="btn btn-outline-secondary">View</a>
+                                    <form th:action="@{|/admin/products/${product.id}/approve|}" method="post"
+                                        class="d-inline">
+                                        <button class="btn btn-success">Approve</button>
+                                    </form>
+                                </div>
+                            </div>
+                            <div th:if="${#lists.isEmpty(pendingProducts)}"
+                                class="list-group-item text-center py-4 text-muted">
+                                No products pending approval.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-white text-center">
+                        <a th:href="@{/admin/products}" class="btn btn-sm btn-link">Manage All Products</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-header bg-white py-3">
+                        <h5 class="card-title mb-0">Recent Users</h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <tbody>
+                                    <tr th:each="user : ${recentUsers}">
+                                        <td class="ps-3">
+                                            <h6 class="mb-0" th:text="${user.name}">User Name</h6>
+                                            <small class="text-muted" th:text="${user.email}">email@example.com</small>
+                                        </td>
+                                        <td><span class="badge bg-light text-dark border"
+                                                th:text="${user.role}">BUYER</span></td>
+                                        <td class="text-end pe-3"
+                                            th:text="${#temporals.format(user.joinedAt, 'dd MMM')}">12 Jan</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-white text-center">
+                        <a th:href="@{/admin/users}" class="btn btn-sm btn-link">Manage All Users</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

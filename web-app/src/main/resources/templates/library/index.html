@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout}">
+
+<head>
+    <title>My Library</title>
+</head>
+
+<body>
+    <div layout:fragment="content">
+        <div class="container mt-4">
+            <h2>My Library</h2>
+
+            <div th:if="${library.empty}" class="alert alert-info">
+                You haven't purchased any products yet. <a th:href="@{/products}">Browse products</a>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-4" th:each="product : ${library}">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 th:text="${product.title}">Product Title</h5>
+                            <p class="text-muted" th:text="${product.subtitle}">Subtitle</p>
+
+                            <div th:if="${product.files != null and !product.files.empty}">
+                                <h6>Download Files:</h6>
+                                <div th:each="file : ${product.files}">
+                                    <a th:href="@{/library/download/{productId}/{fileId}(productId=${product.id}, fileId=${file.id})}"
+                                        class="btn btn-sm btn-primary mb-1">
+                                        <i class="bi bi-download"></i> Download <span
+                                            th:text="${file.filename}">File</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

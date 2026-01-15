@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Verify Your Email</title>
+</head>
+
+<body style="font-family: sans-serif; margin: 0; padding: 20px;">
+    <div
+        style="max-width: 600px; margin: 0 auto; background: #fff; padding: 20px; border: 1px solid #eee; border-radius: 5px;">
+        <h2 style="color: #333;">Welcome to Teacher Marketplace!</h2>
+        <p>Hello <span th:text="${name}">User</span>,</p>
+        <p>Please verify your email address to activate your account and start using the marketplace.</p>
+        <div style="text-align: center; margin: 30px 0;">
+            <a th:href="@{|${baseUrl}/auth/verify-email?token=${token}|}"
+                style="background-color: #198754; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px;">
+                Verify Email Address
+            </a>
+        </div>
+        <p>If you didn't create an account, please ignore this email.</p>
+    </div>
+</body>
+
+</html>

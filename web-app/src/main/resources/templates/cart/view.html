@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout}">
+
+<head>
+    <title>Shopping Cart</title>
+</head>
+
+<body>
+    <div layout:fragment="content">
+        <div class="container mt-4">
+            <h2>Shopping Cart</h2>
+
+            <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+            <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+            <div th:if="${cart.items.empty}" class="alert alert-info">
+                Your cart is empty. <a th:href="@{/products}">Browse products</a>
+            </div>
+
+            <div th:unless="${cart.items.empty}">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Price</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="item : ${cart.items}">
+                            <td>
+                                <a th:href="@{/products/{id}(id=${item.product.id})}"
+                                    th:text="${item.product.title}">Product</a>
+                            </td>
+                            <td th:text="${'R' + item.product.price}">R99.99</td>
+                            <td>
+                                <form th:action="@{/cart/remove}" method="post" style="display:inline;">
+                                    <input type="hidden" name="cartItemId" th:value="${item.id}">
+                                    <button type="submit" class="btn btn-sm btn-danger">Remove</button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Total:</th>
+                            <th th:text="${'R' + total}">R299.97</th>
+                            <th></th>
+                        </tr>
+                    </tfoot>
+                </table>
+
+                <div class="text-end">
+                    <a th:href="@{/checkout}" class="btn btn-primary btn-lg">Proceed to Checkout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout}">
+
+<head>
+    <title>Review Moderation - Teacher Marketplace</title>
+</head>
+
+<body>
+    <div layout:fragment="content">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>Review Moderation</h1>
+        </div>
+
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="bg-light">
+                            <tr>
+                                <th style="width: 20%">Product</th>
+                                <th style="width: 15%">Reviewer</th>
+                                <th style="width: 10%">Rating</th>
+                                <th style="width: 35%">Comment</th>
+                                <th style="width: 20%" class="text-end">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="review : ${reviews}">
+                                <td>
+                                    <a th:href="@{|/products/${review.productId}|}" th:text="${review.productTitle}"
+                                        target="_blank">Product Title</a>
+                                </td>
+                                <td th:text="${review.userName}">Reviewer Name</td>
+                                <td>
+                                    <div class="d-flex text-warning">
+                                        <i class="bi bi-star-fill"
+                                            th:each="i : ${#numbers.sequence(1, review.rating)}"></i>
+                                    </div>
+                                </td>
+                                <td>
+                                    <p class="mb-0 small text-muted" th:text="${review.comment}">Review content...</p>
+                                </td>
+                                <td class="text-end">
+                                    <form th:action="@{|/admin/reviews/${review.id}/approve|}" method="post"
+                                        class="d-inline">
+                                        <button class="btn btn-sm btn-success">Approve</button>
+                                    </form>
+                                    <form th:action="@{|/admin/reviews/${review.id}/reject|}" method="post"
+                                        class="d-inline">
+                                        <button class="btn btn-sm btn-danger ms-1">Reject</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            <tr th:if="${#lists.isEmpty(reviews)}">
+                                <td colspan="5" class="text-center py-4 text-muted">No pending reviews.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                <div class="mt-3" th:if="${reviews.totalPages > 1}">
+                    <nav th:replace="~{fragments/pagination :: pagination(${reviews})}">Pagination</nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.wrightlabs</groupId>
+        <artifactId>marketplace-parent</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>admin-service</artifactId>
+    <packaging>jar</packaging>
+
+    <name>Admin Service</name>
+    <description>Admin tools for moderation, configuration, and reporting</description>
+
+    <dependencies>
+        <!-- Domain module -->
+        <dependency>
+            <groupId>com.wrightlabs</groupId>
+            <artifactId>domain</artifactId>
+        </dependency>
+
+        <!-- Catalog service for product moderation -->
+        <dependency>
+            <groupId>com.wrightlabs</groupId>
+            <artifactId>catalog-service</artifactId>
+        </dependency>
+
+        <!-- Payment service for payout management -->
+        <dependency>
+            <groupId>com.wrightlabs</groupId>
+            <artifactId>payment-service</artifactId>
+        </dependency>
+
+        <!-- Spring Web -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <!-- MapStruct -->
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+        </dependency>
+    </dependencies>
+
+</project>

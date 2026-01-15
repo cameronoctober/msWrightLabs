@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <!-- This fragment is used to render pagination controls -->
+</head>
+
+<body>
+    <nav th:fragment="pagination(page)" aria-label="Page navigation" th:if="${page.totalPages > 1}">
+        <ul class="pagination justify-content-center mb-0">
+            <!-- Previous -->
+            <li class="page-item" th:classappend="${page.first ? 'disabled' : ''}">
+                <a class="page-link"
+                    th:href="@{'' (page=${page.number - 1}, keyword=${param.keyword}, sort=${param.sort})}"
+                    aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+
+            <!-- Page Numbers -->
+            <li class="page-item" th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}"
+                th:classappend="${page.number == i ? 'active' : ''}">
+                <a class="page-link" th:href="@{'' (page=${i}, keyword=${param.keyword}, sort=${param.sort})}"
+                    th:text="${i + 1}">1</a>
+            </li>
+
+            <!-- Next -->
+            <li class="page-item" th:classappend="${page.last ? 'disabled' : ''}">
+                <a class="page-link"
+                    th:href="@{'' (page=${page.number + 1}, keyword=${param.keyword}, sort=${param.sort})}"
+                    aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</body>
+
+</html>
