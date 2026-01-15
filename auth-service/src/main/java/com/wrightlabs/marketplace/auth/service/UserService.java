@@ -48,6 +48,7 @@ public class UserService {
         // Create user
         User user = User.builder()
                 .email(request.getEmail())
+                .fullName(request.getFullName())
                 .passwordHash(passwordEncoder.encode(request.getPassword()))
                 .role(role)
                 .emailVerified(false)
