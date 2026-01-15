@@ -1,0 +1,58 @@
+services:
+  # Web Service (Spring Boot App)
+  - type: web
+    name: lesson-marketplace
+    env: docker
+    plan: free
+    region: frankfurt
+    buildCommand: "./mvnw clean package -DskipTests"
+    startCommand: "java -jar target/*.jar" # NOTE: If using Docker runtime, Render ignores this and uses ENTRYPOINT
+    dockerContext: .
+    dockerfilePath: Dockerfile
+    healthCheckPath: /actuator/health
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      - key: JAVA_TOOL_OPTIONS
+        value: "-Xmx512m -Xms256m"
+      - key: DATABASE_URL
+        fromDatabase:
+          name: marketplace-db
+          property: connectionString
+      - key: SPRING_DATASOURCE_URL
+        fromDatabase:
+          name: marketplace-db
+          property: connectionString
+      - key: SPRING_DATASOURCE_USERNAME
+        fromDatabase:
+          name: marketplace-db
+          property: user
+      - key: SPRING_DATASOURCE_PASSWORD
+        fromDatabase:
+          name: marketplace-db
+          property: password
+      - key: S3_BUCKET
+        sync: false
+      - key: S3_REGION
+        sync: false
+      - key: S3_ACCESS_KEY
+        sync: false
+      - key: S3_SECRET_KEY
+        sync: false
+      - key: PAYFAST_MERCHANT_ID
+        sync: false
+      - key: PAYFAST_MERCHANT_KEY
+        sync: false
+      - key: PAYFAST_PASSPHRASE
+        sync: false
+      - key: SMTP_USERNAME
+        sync: false
+      - key: SMTP_PASSWORD
+        sync: false
+
+databases:
+  - name: marketplace-db
+    databaseName: marketplace
+    user: marketplace_user
+    plan: free
+    region: frankfurt
